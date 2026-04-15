@@ -1,26 +1,169 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #efe2c2;
+  --bg-soft: #e6d6b3;
+  --surface: #f3e6c8;
+  --surface-muted: #e8d8b7;
+  --text: #372a1e;
+  --text-soft: #665647;
+  --gold: #b28b4c;
+  --sky: #b8ad8d;
+  --ring: #b79f74;
+  --grad-a: #f4e8cc;
+  --grad-b: #e8d7b2;
+  --grad-c: #dcc39c;
+  --shadow: 0 24px 50px rgba(82, 88, 98, 0.12);
+}
+
+[data-theme="dark"] {
+  --bg: #2a2218;
+  --bg-soft: #362b1d;
+  --surface: #3e3121;
+  --surface-muted: #4a3a28;
+  --text: #eadfca;
+  --text-soft: #c4b69d;
+  --gold: #b89158;
+  --sky: #8f7d5a;
+  --ring: #8c7754;
+  --grad-a: #2a2218;
+  --grad-b: #342818;
+  --grad-c: #412f1d;
+  --shadow: 0 24px 60px rgba(6, 9, 14, 0.42);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans), sans-serif;
+  letter-spacing: 0.005em;
+  transition:
+    background-color 2400ms ease,
+    color 2400ms ease;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.12;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(66, 45, 24, 0.38) 1px, transparent 0),
+    radial-gradient(circle at 3px 3px, rgba(126, 97, 62, 0.2) 1px, transparent 0);
+  background-size: 10px 10px, 14px 14px;
+  mix-blend-mode: multiply;
+  z-index: 0;
+}
+
+* {
+  border-color: color-mix(in srgb, var(--ring) 30%, transparent);
+}
+
+.app-gradient {
+  background:
+    radial-gradient(100rem 55rem at 10% -10%, color-mix(in srgb, var(--sky) 32%, transparent), transparent 65%),
+    radial-gradient(85rem 60rem at 90% 110%, color-mix(in srgb, var(--gold) 24%, transparent), transparent 66%),
+    linear-gradient(135deg, var(--grad-a), var(--grad-b) 45%, var(--grad-c));
+  transition: background 2600ms ease-in-out;
+}
+
+.surface-card {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(4px);
+  border: 1px solid color-mix(in srgb, var(--ring) 45%, transparent);
+}
+
+.manuscript-scroll {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 94%, #f6ebcf) 0%, color-mix(in srgb, var(--surface-muted) 92%, #e9d9b5) 100%);
+  border-radius: 1.7rem;
+  border: 1px solid color-mix(in srgb, var(--ring) 50%, transparent);
+  box-shadow: var(--shadow);
+  position: relative;
+}
+
+.manuscript-scroll::before,
+.manuscript-scroll::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 74%;
+  height: 1px;
+  background: color-mix(in srgb, var(--ring) 55%, transparent);
+}
+
+.manuscript-scroll::before {
+  top: 18px;
+}
+
+.manuscript-scroll::after {
+  bottom: 18px;
+}
+
+.text-soft {
+  color: var(--text-soft);
+}
+
+.breathe {
+  animation: breathe 8s ease-in-out infinite;
+}
+
+.float-slow {
+  animation: float-slow 12s ease-in-out infinite;
+}
+
+.fade-drift {
+  animation: fade-drift 1400ms ease-in-out both;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes fade-drift {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
 }

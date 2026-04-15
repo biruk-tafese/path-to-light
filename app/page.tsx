@@ -1,65 +1,80 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { ParticleBackground } from "@/components/particle-background";
+import { homeCopy } from "@/lib/content";
+import { useLanguage } from "@/components/providers/language-provider";
 
 export default function Home() {
+  const { t } = useLanguage();
+  const router = useRouter();
+  const [isEntering, setIsEntering] = useState(false);
+
+  const startJourney = () => {
+    if (isEntering) {
+      return;
+    }
+    setIsEntering(true);
+    window.setTimeout(() => {
+      router.push("/timeline");
+    }, 850);
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <motion.section
+      className="relative flex min-h-[84vh] items-center justify-center overflow-hidden rounded-[2rem] px-6 py-16 md:px-12"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: isEntering ? 0 : 1, scale: isEntering ? 1.03 : 1 }}
+      transition={{ duration: isEntering ? 0.8 : 3.8, ease: "easeInOut" }}
+    >
+      <ParticleBackground />
+
+      <div className="relative z-10 w-full max-w-4xl text-center">
+        <motion.h1
+          className="font-serif text-5xl leading-tight md:text-7xl"
+          initial={{ opacity: 0, y: 26 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 3.5, ease: "easeInOut" }}
+        >
+          {t(homeCopy.heading)}
+        </motion.h1>
+
+        <motion.p
+          className="mx-auto mt-6 max-w-2xl text-lg leading-9 text-soft md:text-xl"
+          initial={{ opacity: 0, y: 22 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 3.8, ease: "easeInOut", delay: 0.35 }}
+        >
+          {t(homeCopy.intro)}
+        </motion.p>
+
+        <motion.div
+          className="relative mx-auto mt-14 flex h-64 w-full max-w-xl items-end justify-center"
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 2.4, delay: 0.8, ease: "easeInOut" }}
+        >
+          <div className="pointer-events-none absolute inset-x-1/2 top-0 h-full w-3 -translate-x-1/2 rounded-full bg-[linear-gradient(180deg,rgba(232,211,167,0.15),rgba(232,211,167,0.8),rgba(232,211,167,0.15))] blur-[0.5px]" />
+          <div className="pointer-events-none absolute inset-x-1/2 top-0 h-full w-[1px] -translate-x-1/2 bg-[rgba(89,65,30,0.45)]" />
+          <motion.div
+            className="pointer-events-none absolute inset-x-1/2 top-2 h-7 w-7 -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,239,193,0.95),rgba(245,210,132,0.35),transparent_72%)]"
+            animate={{ y: [0, 170, 0], opacity: [0.65, 0.95, 0.65] }}
+            transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+          />
+
+          <button
+            type="button"
+            onClick={startJourney}
+            disabled={isEntering}
+            className="surface-card breathe inline-flex items-center gap-2 rounded-2xl px-7 py-4 text-lg font-medium disabled:opacity-70"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            <span aria-hidden="true">🛤️</span>
+            {t(homeCopy.cta)}
+          </button>
+        </motion.div>
+      </div>
+    </motion.section>
   );
 }
