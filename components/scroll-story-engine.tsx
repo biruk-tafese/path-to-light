@@ -69,11 +69,16 @@ export function ScrollStoryEngine() {
   }, [activeScene.audio, setActiveNarrationSource]);
 
   return (
-    <div
-      ref={containerRef}
-      className="h-screen snap-y snap-mandatory overflow-y-auto rounded-[2rem] px-2 transition-[background] duration-[2200ms]"
-      style={{ background: "transparent" }}
-    >
+    <div className="space-y-4">
+      <p className="mx-auto max-w-3xl px-3 text-sm leading-7 text-soft md:px-0 md:text-base">
+        {t(timelineCopy.intro)}
+      </p>
+
+      <div
+        ref={containerRef}
+        className="h-screen snap-y snap-mandatory overflow-y-auto rounded-[2rem] px-2 transition-[background] duration-[2200ms]"
+        style={{ background: "transparent" }}
+      >
       {scenes.map((scene) => (
         <section
           key={scene.id}
@@ -116,6 +121,7 @@ export function ScrollStoryEngine() {
           </div>
         </section>
       ))}
+      </div>
     </div>
   );
 }

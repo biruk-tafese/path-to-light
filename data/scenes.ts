@@ -191,6 +191,44 @@ export const scenes: Scene[] = [
     background: "linear-gradient(160deg, #8a7c5f 0%, #d7c89f 50%, #f4ead0 100%)",
     emotion: "hope",
   },
+  {
+    id: "response",
+    title: { am: "አሁን ምን ልታደርግ ነው?", en: "What Should You Do Now?" },
+    text: {
+      am: "እምነት ካለህ በእሱ ቀስ ብለህ ተቀመጥ፤ እምነት ካልነበረህም በጸጥታ ጥያቄ ይዘህ ቀጥል።",
+      en: "If you believe, stay with it gently. If you do not yet believe, keep going with your questions in peace.",
+    },
+    historical: {
+      year: { am: "ዛሬ", en: "Today" },
+      location: { am: "የራስህ ልብ", en: "Your own heart" },
+      context: {
+        am: "ይህ ክፍል ለማሳየት እንጂ ለመጫን አይደለም።",
+        en: "This moment is here to guide, not to pressure.",
+      },
+    },
+    biblical: {
+      reference: { am: "ዮሐንስ 20:31", en: "John 20:31" },
+      excerpt: {
+        am: "እነዚህ የተጻፉት ታምነው ሕይወት እንዲኖር ነው።",
+        en: "These are written so that you may believe and have life.",
+      },
+    },
+    wordsActions: {
+      am: "አንተን የሚገፋ አይደለም፤ አንተን በቀስታ ይጋብዛል።",
+      en: "This does not push you; it gently invites you.",
+    },
+    evidence: {
+      am: "ሰዎች ብዙ ጊዜ መጀመሪያ በጥያቄ ይጀምራሉ። ያ ደግሞ እዚህ ቦታ ይችላል።",
+      en: "Many people begin with questions. That is welcome here too.",
+    },
+    spiritualMeaning: {
+      am: "ለማወቅ መጠየቅ ጥሩ መጀመሪያ ነው።",
+      en: "Asking honest questions is a good beginning.",
+    },
+    audio: "/audio/narration/response.mp3",
+    background: "linear-gradient(160deg, #8f8266 0%, #d8cab0 50%, #f3e7cf 100%)",
+    emotion: "reflection",
+  },
 ];
 
 export const emotionChoices: EmotionChoice[] = [
@@ -201,7 +239,7 @@ export const emotionChoices: EmotionChoice[] = [
       am: "ከጨለማ ወደ ብርሃን የሚመራ መንገድ",
       en: "A path that moves from darkness to light",
     },
-    sceneIds: ["promise", "cross", "resurrection"],
+    sceneIds: ["promise", "cross", "resurrection", "response"],
   },
   {
     key: "tired",
@@ -210,7 +248,7 @@ export const emotionChoices: EmotionChoice[] = [
       am: "የምሕረት እና እረፍት ጉዞ",
       en: "A journey of mercy and rest",
     },
-    sceneIds: ["ministry", "cross", "resurrection"],
+    sceneIds: ["ministry", "cross", "resurrection", "response"],
   },
   {
     key: "hopeful",
@@ -219,7 +257,7 @@ export const emotionChoices: EmotionChoice[] = [
       am: "ተስፋ ከትንቢት እስከ ትንሣኤ",
       en: "Hope from promise to resurrection",
     },
-    sceneIds: ["promise", "birth", "resurrection"],
+    sceneIds: ["promise", "birth", "resurrection", "response"],
   },
   {
     key: "searching",
@@ -228,6 +266,6 @@ export const emotionChoices: EmotionChoice[] = [
       am: "ትርጉምን እና ሰላምን በቀስታ መፈለግ",
       en: "A quiet search for peace and meaning",
     },
-    sceneIds: ["birth", "ministry", "cross", "resurrection"],
+    sceneIds: ["birth", "ministry", "cross", "resurrection", "response"],
   },
 ];
