@@ -32,8 +32,8 @@ export const homeCopy = {
 export const timelineCopy = {
   title: { am: "የታሪክ ጉዞ", en: "Timeline Journey" },
   intro: {
-    am: "ይህ እንደ ጥንታዊ ጥቅል ጽሑፍ ነው፤ በቀስታ ትንቢት፣ ልደት፣ መስቀል እና ትንሣኤ ታነባለህ።",
-    en: "This works like an ancient manuscript scroll: you move slowly through prophecy, birth, the cross, and resurrection.",
+    am: "በቀስታ በሙሉ ገጽ ታሪኩን ተከተል።",
+    en: "Move slowly through the story, one full page at a time.",
   },
   labels: {
     location: { am: "ቦታ", en: "Location" },
