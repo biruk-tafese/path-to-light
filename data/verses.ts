@@ -4,6 +4,8 @@ export type VerseMoment = {
   id: string;
   verse: LocalizedText;
   ref: LocalizedText;
+  details?: LocalizedText;
+  context?: LocalizedText;
 };
 
 export const scriptureMoments: VerseMoment[] = [

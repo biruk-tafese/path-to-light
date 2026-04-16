@@ -70,23 +70,23 @@ export function ScrollStoryEngine() {
 
   return (
     <div className="space-y-4">
-      <div className="mx-auto max-w-3xl rounded-xl border border-black/10 bg-white/35 px-4 py-3">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-soft md:text-sm">🎯 {t({ am: "ትኩረት", en: "Focus" })}</p>
-        <p className="mt-1 pl-4 text-sm leading-7 text-soft indent-6 md:text-base">{t(timelineCopy.intro)}</p>
+      <div className="mx-2 rounded-lg border border-black/10 bg-white/35 px-2.5 py-2 md:mx-auto md:max-w-3xl md:rounded-xl md:px-4 md:py-3">
+        <p className="text-[11px] font-semibold tracking-[0.12em] text-soft md:text-sm md:uppercase md:tracking-[0.2em]">🎯 {t({ am: "ትኩረት", en: "Focus" })}</p>
+        <p className="mt-1 pl-2 text-[13px] leading-6 text-soft md:pl-4 md:text-base md:leading-7 md:indent-6">{t(timelineCopy.intro)}</p>
       </div>
 
       <div
         ref={containerRef}
-        className="h-screen snap-y snap-mandatory overflow-y-auto rounded-[2rem] px-2 transition-[background] duration-[2200ms]"
+        className="h-screen snap-y snap-mandatory overflow-y-auto rounded-[2rem] px-0 md:px-2 transition-[background] duration-[2200ms]"
         style={{ background: "transparent" }}
       >
       {scenes.map((scene) => (
         <section
           key={scene.id}
-          className="scene-block h-screen snap-start px-4 py-8 md:px-8"
+          className="scene-block h-screen snap-start px-0 py-5 md:px-8 md:py-8"
         >
           <div className="flex h-full items-center justify-center">
-            <article className="manuscript-scroll w-full max-w-3xl p-6 md:p-10">
+            <article className="manuscript-scroll w-full max-w-3xl rounded-none p-4 md:rounded-[2rem] md:p-10">
               <p className="text-sm tracking-wide text-soft">📅 {t(scene.historical.year)} • 📍 {t(scene.historical.location)}</p>
               <h3 className="mt-2 font-serif text-3xl md:text-5xl">🧭 {t(scene.title)}</h3>
 
