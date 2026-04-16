@@ -14,8 +14,7 @@ const navItems = [
   { href: "/timeline", key: "timeline" as const },
   { href: "/journey", key: "journey" as const },
   { href: "/scripture", key: "scripture" as const },
-  { href: "/audio", key: "audio" as const },
-  { href: "/pause", key: "pause" as const },
+  { href: "/nearbychurch", key: "nearbychurch" as const },
 ];
 
 export function Shell({ children }: { children: React.ReactNode }) {

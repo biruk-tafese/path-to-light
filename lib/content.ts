@@ -5,8 +5,6 @@
   timelineCopy,
   journeyCopy,
   scriptureCopy,
-  audioCopy,
-  pauseCopy,
 } from "@/data/timeline";
 
 export { scenes, emotionChoices } from "@/data/scenes";

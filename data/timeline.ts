@@ -10,8 +10,7 @@ export const navLabels = {
   timeline: { am: "የታሪክ ጉዞ", en: "Timeline" },
   journey: { am: "የልብ ጉዞ", en: "Journey" },
   scripture: { am: "ቅዱሳት መጻሕፍት", en: "Scripture" },
-  audio: { am: "መዝሙርና ንባብ", en: "Audio" },
-  pause: { am: "ጸጥታ", en: "Pause" },
+  nearbychurch: { am: "ቅርብ ያሉ ቤተ ክርስቲያናት", en: "Nearby Churches" },
 };
 
 export const homeCopy = {
@@ -60,17 +59,4 @@ export const scriptureCopy = {
     am: "እነዚህ ቅዱሳት ቃላት ለማንበብ ብቻ ሳይሆን ለነፍስዎ እረፍት እንዲሆኑ ተዘጋጅተዋል።",
     en: "These words are not only for reading, but for resting.",
   },
-};
-
-export const audioCopy = {
-  title: { am: "የድምጽ ተሞክሮ", en: "Story Sound" },
-  intro: {
-    am: "ታሪኩን በድምጽ ማዳመጥ ይችላሉ፤ ሆኖም ጸጥታ ለነፍስ የመጀመሪያዋ ቋንቋ ናት።",
-    en: "Sound is optional; silence is the default state.",
-  },
-};
-
-export const pauseCopy = {
-  title: { am: "ጸጥ በል... እወቅም...", en: "Be still..." },
-  label: { am: "የጸጥታ ጊዜ", en: "Pause" },
 };
