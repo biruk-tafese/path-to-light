@@ -69,15 +69,10 @@ export function ScrollStoryEngine() {
   }, [activeScene.audio, setActiveNarrationSource]);
 
   return (
-    <div className="space-y-4">
-      <div className="mx-2 rounded-lg border border-black/10 bg-white/35 px-2.5 py-2 md:mx-auto md:max-w-3xl md:rounded-xl md:px-4 md:py-3">
-        <p className="text-[11px] font-semibold tracking-[0.12em] text-soft md:text-sm md:uppercase md:tracking-[0.2em]">🎯 {t({ am: "ትኩረት", en: "Focus" })}</p>
-        <p className="mt-1 pl-2 text-[13px] leading-6 text-soft md:pl-4 md:text-base md:leading-7 md:indent-6">{t(timelineCopy.intro)}</p>
-      </div>
-
+    <div className="space-y-6">
       <div
         ref={containerRef}
-        className="h-screen snap-y snap-mandatory overflow-y-auto rounded-[2rem] px-0 md:px-2 transition-[background] duration-[2200ms]"
+        className="h-screen snap-y ssnap-mandatory overflow-y-auto rounded-[2rem] px-0 md:px-2 transition-[background] duration-[2200ms]"
         style={{ background: "transparent" }}
       >
       {scenes.map((scene) => (

@@ -104,22 +104,6 @@ export function ScriptureCard({
             </div>
           ) : null}
 
-          {!details && !context ? (
-            <div className="rounded-md border-l-2 border-black/20 pl-3">
-              <p className="font-semibold text-soft">
-                <span className="inline-flex items-center gap-2">
-                  <LuFocus size={15} />
-                  {t({ am: "የማንበብ መመሪያ", en: "Reading Guide" })}
-                </span>
-              </p>
-              <p className="mt-1 pl-4 indent-6 leading-7">
-                {t({
-                  am: "ቃሉን በቀስታ ደጋግመው ያንብቡ፤ ይህ ክፍል ስለ ክርስቶስ ምን ያሳያል? በሕይወቴስ ምን ይጠራኛል? ብለው ያስቡ።",
-                  en: "Read the verse slowly more than once. Ask what it reveals about Christ and how it calls you to respond in your own life.",
-                })}
-              </p>
-            </div>
-          ) : null}
         </motion.div>
       ) : null}
     </motion.article>
