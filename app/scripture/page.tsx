@@ -1,8 +1,7 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { LuPlus, LuX, LuMinus } from "react-icons/lu";
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import { LuImagePlus, LuPlus, LuX, LuMinus } from "react-icons/lu";
 import { ScriptureCard } from "@/components/scripture-card";
 import { useLanguage } from "@/components/providers/language-provider";
 import { scriptureMoments } from "@/lib/content";
@@ -58,10 +57,12 @@ function referenceBook(refEn: string) {
 
 type ScripturePost = {
   id: string;
-  verse: LocalizedText;
   ref: LocalizedText;
-  details: LocalizedText;
-  context: LocalizedText;
+  verseBlocks: LocalizedText[];
+  detailBlocks: LocalizedText[];
+  contextBlocks: LocalizedText[];
+  photoUrl?: string;
+  photoName?: string;
 };
 
 const emptyLocalizedText: LocalizedText = { am: "", en: "" };
@@ -77,17 +78,9 @@ type ComposerDraft = {
   verseBlocks: ComposerBlock[];
   detailBlocks: ComposerBlock[];
   contextBlocks: ComposerBlock[];
+  photoUrl: string;
+  photoName: string;
 };
-
-function createEmptyPost(): ScripturePost {
-  return {
-    id: `custom-${Date.now()}`,
-    verse: { ...emptyLocalizedText },
-    ref: { ...emptyLocalizedText },
-    details: { ...emptyLocalizedText },
-    context: { ...emptyLocalizedText },
-  };
-}
 
 function createComposerBlock(): ComposerBlock {
   return { am: "", en: "" };
@@ -100,14 +93,16 @@ function createEmptyDraft(): ComposerDraft {
     verseBlocks: [createComposerBlock()],
     detailBlocks: [createComposerBlock()],
     contextBlocks: [createComposerBlock()],
+    photoUrl: "",
+    photoName: "",
   };
 }
 
-function mergeBlocks(blocks: ComposerBlock[]) {
-  return {
-    am: blocks.map((block) => block.am.trim()).filter(Boolean).join("\n\n"),
-    en: blocks.map((block) => block.en.trim()).filter(Boolean).join("\n\n"),
-  };
+function blockListToLocalizedText(blocks: ComposerBlock[]) {
+  return blocks.map((block) => ({
+    am: block.am.trim(),
+    en: block.en.trim(),
+  })).filter((block) => block.am || block.en);
 }
 
 export default function ScripturePage() {
@@ -118,21 +113,27 @@ export default function ScripturePage() {
   const [isComposerOpen, setIsComposerOpen] = useState(false);
   const [draft, setDraft] = useState<ComposerDraft>(createEmptyDraft);
 
-  const grouped = useMemo(() => {
-    const allMoments = [...postedVerses, ...scriptureMoments];
+  useEffect(() => {
+    return () => {
+      if (draft.photoUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(draft.photoUrl);
+      }
+    };
+  }, [draft.photoUrl]);
 
-    const oldTestament = allMoments.filter((item) => {
+  const grouped = useMemo(() => {
+    const oldTestament = scriptureMoments.filter((item) => {
       const book = referenceBook(item.ref.en);
       return oldTestamentBooks.includes(book);
     });
 
-    const newTestament = allMoments.filter((item) => {
+    const newTestament = scriptureMoments.filter((item) => {
       const book = referenceBook(item.ref.en);
       return !oldTestamentBooks.includes(book);
     });
 
     return { oldTestament, newTestament };
-  }, [postedVerses]);
+  }, []);
 
   function toggleLike(id: string) {
     setLikedIds((current) =>
@@ -140,8 +141,19 @@ export default function ScripturePage() {
     );
   }
 
-  async function shareVerse(item: { verse: LocalizedText; ref: LocalizedText; details?: LocalizedText; context?: LocalizedText }) {
-    const shareText = `${t(item.ref)}\n${t(item.verse)}${item.details ? `\n\n${t(item.details)}` : ""}${item.context ? `\n\n${t(item.context)}` : ""}`;
+  async function shareVerse(item: {
+    ref: LocalizedText;
+    verseBlocks?: LocalizedText[];
+    verse?: LocalizedText;
+    detailBlocks?: LocalizedText[];
+    details?: LocalizedText;
+    contextBlocks?: LocalizedText[];
+    context?: LocalizedText;
+  }) {
+    const verseText = item.verseBlocks?.length ? item.verseBlocks.map((block) => t(block)).join("\n\n") : item.verse ? t(item.verse) : "";
+    const detailText = item.detailBlocks?.length ? item.detailBlocks.map((block) => t(block)).join("\n\n") : item.details ? t(item.details) : "";
+    const contextText = item.contextBlocks?.length ? item.contextBlocks.map((block) => t(block)).join("\n\n") : item.context ? t(item.context) : "";
+    const shareText = `${t(item.ref)}\n${verseText}${detailText ? `\n\n${detailText}` : ""}${contextText ? `\n\n${contextText}` : ""}`;
 
     if (navigator.share) {
       try {
@@ -158,19 +170,34 @@ export default function ScripturePage() {
     await navigator.clipboard.writeText(shareText);
   }
 
+  function handlePhotoChange(file: File | null) {
+    if (!file) {
+      setDraft((current) => ({ ...current, photoUrl: "", photoName: "" }));
+      return;
+    }
+
+    setDraft((current) => ({
+      ...current,
+      photoUrl: URL.createObjectURL(file),
+      photoName: file.name,
+    }));
+  }
+
   function handlePostSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const verse = mergeBlocks(draft.verseBlocks);
-    const details = mergeBlocks(draft.detailBlocks);
-    const context = mergeBlocks(draft.contextBlocks);
+    const verseBlocks = blockListToLocalizedText(draft.verseBlocks);
+    const detailBlocks = blockListToLocalizedText(draft.detailBlocks);
+    const contextBlocks = blockListToLocalizedText(draft.contextBlocks);
 
     const nextPost: ScripturePost = {
       id: `custom-${Date.now()}`,
       ref: draft.ref,
-      verse,
-      details,
-      context,
+      verseBlocks,
+      detailBlocks,
+      contextBlocks,
+      photoUrl: draft.photoUrl,
+      photoName: draft.photoName,
     };
 
     setPostedVerses((current) => [nextPost, ...current]);
@@ -179,14 +206,17 @@ export default function ScripturePage() {
     setDraft(createEmptyDraft());
   }
 
+  function clearComposerPhoto() {
+    if (draft.photoUrl.startsWith("blob:")) {
+      URL.revokeObjectURL(draft.photoUrl);
+    }
+
+    setDraft((current) => ({ ...current, photoUrl: "", photoName: "" }));
+  }
+
   return (
     <section className="space-y-6">
-      <motion.div
-        initial={{ opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="flex flex-col gap-4"
-      >
+      <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div className="space-y-2">
             <h1 className="font-serif text-4xl md:text-5xl">{t(scriptureCopy.title)}</h1>
@@ -202,7 +232,51 @@ export default function ScripturePage() {
             {t({ am: "መጽሐፍ ቅዱስ አጋራ", en: "Share Scripture" })}
           </button>
         </div>
-      </motion.div>
+      </div>
+
+      <div className="space-y-3 rounded-[2rem] border border-black/10 bg-white/30 p-4 md:p-5">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="font-serif text-2xl md:text-3xl">{t({ am: "የማህበራዊ ጉዞ", en: "Community Feed" })}</h2>
+            <p className="mt-1 text-sm text-soft">{t({ am: "ቃሉን ከሰዎች ጋር አጋር፤ ምስል አክል፣ ውድድር ሳይሆን ምስክርነት ሁን።", en: "Share scripture with others. Add an image and let it be witness, not competition." })}</p>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setIsComposerOpen(true)}
+            className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/55 px-4 py-2 text-sm text-soft transition-colors hover:bg-white/70"
+          >
+            <LuPlus size={16} />
+            {t({ am: "አዲስ ቃል ጨምር", en: "Add Verse" })}
+          </button>
+        </div>
+
+        {postedVerses.length ? (
+          <div className="flex flex-col gap-4">
+            {postedVerses.map((item, index) => (
+              <ScriptureCard
+                key={item.id}
+                index={index + 1}
+                reference={item.ref}
+                open={openId === item.id}
+                onToggle={() => setOpenId((prev) => (prev === item.id ? null : item.id))}
+                liked={likedIds.includes(item.id)}
+                onLike={() => toggleLike(item.id)}
+                onShare={() => void shareVerse(item)}
+                verseBlocks={item.verseBlocks}
+                detailBlocks={item.detailBlocks}
+                contextBlocks={item.contextBlocks}
+                photoUrl={item.photoUrl}
+                photoName={item.photoName}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="rounded-2xl border border-dashed border-black/10 bg-white/35 px-4 py-6 text-sm text-soft">
+            {t({ am: "እስካሁን የተጋራ ቃል የለም፤ ከላይ ያለውን + ይጫኑ እና መጀመሪያውን ይጋሩ።", en: "No shared scripture yet. Press the + button above and post the first one." })}
+          </p>
+        )}
+      </div>
 
       <div className="space-y-8">
         <div className="space-y-3">
@@ -214,13 +288,13 @@ export default function ScripturePage() {
               <ScriptureCard
                 key={item.id}
                 index={index + 1}
-                verse={item.verse}
                 reference={item.ref}
                 open={openId === item.id}
                 onToggle={() => setOpenId((prev) => (prev === item.id ? null : item.id))}
                 liked={likedIds.includes(item.id)}
                 onLike={() => toggleLike(item.id)}
                 onShare={() => void shareVerse(item)}
+                verse={item.verse}
                 details={item.details}
                 context={item.context}
               />
@@ -237,13 +311,13 @@ export default function ScripturePage() {
               <ScriptureCard
                 key={item.id}
                 index={grouped.oldTestament.length + index + 1}
-                verse={item.verse}
                 reference={item.ref}
                 open={openId === item.id}
                 onToggle={() => setOpenId((prev) => (prev === item.id ? null : item.id))}
                 liked={likedIds.includes(item.id)}
                 onLike={() => toggleLike(item.id)}
                 onShare={() => void shareVerse(item)}
+                verse={item.verse}
                 details={item.details}
                 context={item.context}
               />
@@ -252,22 +326,12 @@ export default function ScripturePage() {
         </div>
       </div>
 
-      <AnimatePresence>
-        {isComposerOpen ? (
-          <motion.div
-            className="fixed inset-0 z-50 bg-black/45 px-3 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+      {isComposerOpen ? (
+        <div className="fixed inset-0 z-50 bg-black/45 px-3 backdrop-blur-sm">
+          <div
+            className="surface-card mx-auto mt-20 w-full max-w-4xl rounded-[2rem] p-5 shadow-2xl md:mt-24 md:p-8"
+            style={{ maxHeight: "calc(100vh - 6rem)", overflowY: "auto" }}
           >
-            <motion.div
-              className="surface-card mx-auto mt-20 w-full max-w-4xl rounded-[2rem] p-5 shadow-2xl md:mt-24 md:p-8"
-              initial={{ y: -18, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -18, opacity: 0 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              style={{ maxHeight: "calc(100vh - 6rem)", overflowY: "auto" }}
-            >
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h3 className="font-serif text-2xl md:text-3xl">{t({ am: "መጽሐፍ ቅዱስ አጋራ", en: "Share Scripture" })}</h3>
@@ -294,9 +358,43 @@ export default function ScripturePage() {
                   compact
                 />
 
+                <div className="space-y-3 rounded-[1.5rem] border border-black/10 bg-white/30 p-4 md:p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <h4 className="font-serif text-xl text-ink/90">{t({ am: "Photo", en: "Photo" })}</h4>
+                    {draft.photoUrl ? (
+                      <button
+                        type="button"
+                        onClick={clearComposerPhoto}
+                        className="rounded-full border border-black/10 px-3 py-2 text-sm text-soft"
+                      >
+                        {t({ am: "ሰርዝ", en: "Remove" })}
+                      </button>
+                    ) : null}
+                  </div>
+
+                  <label className="flex cursor-pointer items-center gap-3 rounded-2xl border border-dashed border-black/15 bg-white/45 px-4 py-4 text-sm text-soft transition hover:bg-white/60">
+                    <LuImagePlus size={18} />
+                    <span>{draft.photoName || t({ am: "ፎቶ ጨምር", en: "Add photo" })}</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(event) => handlePhotoChange(event.target.files?.[0] ?? null)}
+                    />
+                  </label>
+
+                  {draft.photoUrl ? (
+                    <img
+                      src={draft.photoUrl}
+                      alt={draft.photoName || "Scripture attachment"}
+                      className="max-h-64 w-full rounded-2xl object-cover"
+                    />
+                  ) : null}
+                </div>
+
                 <RepeatableSection
                   title={t({ am: "Verse", en: "Verse" })}
-                  addLabel={t({ am: "ተጨማሪ ቃል ጨምር", en: "Add more verse" })}
+                  addLabel={t({ am: "ተጨማሪ ቃል ጨምር", en: "Add more" })}
                   blocks={draft.verseBlocks}
                   onAdd={() => setDraft((current) => ({ ...current, verseBlocks: [...current.verseBlocks, createComposerBlock()] }))}
                   onRemove={(index) =>
@@ -315,7 +413,7 @@ export default function ScripturePage() {
 
                 <RepeatableSection
                   title={t({ am: "Details", en: "Details" })}
-                  addLabel={t({ am: "ተጨማሪ ዝርዝር ጨምር", en: "Add more details" })}
+                  addLabel={t({ am: "ተጨማሪ ዝርዝር ጨምር", en: "Add more" })}
                   blocks={draft.detailBlocks}
                   onAdd={() => setDraft((current) => ({ ...current, detailBlocks: [...current.detailBlocks, createComposerBlock()] }))}
                   onRemove={(index) =>
@@ -334,7 +432,7 @@ export default function ScripturePage() {
 
                 <RepeatableSection
                   title={t({ am: "Context", en: "Context" })}
-                  addLabel={t({ am: "ተጨማሪ ማብራሪያ ጨምር", en: "Add more context" })}
+                  addLabel={t({ am: "ተጨማሪ ማብራሪያ ጨምር", en: "Add more" })}
                   blocks={draft.contextBlocks}
                   onAdd={() => setDraft((current) => ({ ...current, contextBlocks: [...current.contextBlocks, createComposerBlock()] }))}
                   onRemove={(index) =>
@@ -368,10 +466,9 @@ export default function ScripturePage() {
                   </button>
                 </div>
               </form>
-            </motion.div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }
@@ -441,7 +538,7 @@ function RepeatableSection({
         {blocks.map((block, index) => (
           <div key={`${title}-${index}`} className="space-y-3 rounded-2xl border border-black/8 bg-white/45 p-3 md:p-4">
             <div className="flex items-center justify-between gap-2 text-xs uppercase tracking-[0.18em] text-soft/70">
-              <span>Amharic / English</span>
+              <span>{title} {index + 1}</span>
               {blocks.length > 1 ? (
                 <button
                   type="button"
