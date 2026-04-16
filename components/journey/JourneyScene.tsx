@@ -1,7 +1,14 @@
-"use client";
+﻿"use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { LuChevronDown } from "react-icons/lu";
+import {
+  LuBookOpen,
+  LuChevronDown,
+  LuCircle,
+  LuHeart,
+  LuLightbulb,
+  LuTarget,
+} from "react-icons/lu";
 import type { JourneyScene as JourneySceneType } from "@/data/journey";
 import { useLanguage } from "@/components/providers/language-provider";
 import { EmotionIcon } from "@/components/journey/EmotionIcon";
@@ -10,7 +17,7 @@ function SlowText({ value }: { value: string }) {
   const words = value.split(" ");
 
   return (
-    <p className="max-w-3xl text-base leading-8 text-soft md:text-lg">
+    <p className="max-w-3xl pl-5 text-base leading-8 text-soft indent-6 md:text-lg">
       {words.map((word, index) => (
         <motion.span
           key={`${word}-${index}`}
@@ -74,27 +81,55 @@ export function JourneyAccordionItem({
               className="overflow-hidden"
             >
               <div className="mt-5 space-y-5">
-                <div>
-                  <p className="mb-2 font-semibold text-soft">{t({ am: "ስሜት", en: "Feeling" })}</p>
+                <div className="rounded-md border border-black/10 bg-black/5 px-3 py-2">
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-soft md:text-sm">
+                    <span className="inline-flex items-center gap-2">
+                      <LuTarget size={15} />
+                      {t({ am: "Focus", en: "Focus" })}
+                    </span>
+                  </p>
+                  <p className="mt-1 pl-4 text-sm md:text-base">{t(scene.title)}</p>
+                </div>
+
+                <div className="rounded-md border-l-2 border-black/20 pl-3">
+                  <p className="mb-2 font-semibold text-soft">
+                    <span className="inline-flex items-center gap-2">
+                      <LuCircle size={15} />
+                      {t({ am: "Feeling", en: "Feeling" })}
+                    </span>
+                  </p>
                   <SlowText value={t(scene.description)} />
                 </div>
 
-                <div>
+                <div className="rounded-md border-l-2 border-black/20 pl-3">
                   <p className="mb-2 font-semibold text-soft">
-                    {t({ am: "ክርስቶስ እንደ ፈውስ እና ማዳን", en: "Christ as Healing and Salvation" })}
+                    <span className="inline-flex items-center gap-2">
+                      <LuHeart size={15} />
+                      {t({ am: "Christ as Healing and Salvation", en: "Christ as Healing and Salvation" })}
+                    </span>
                   </p>
                   <SlowText value={t(scene.solution)} />
                 </div>
 
-                <div>
-                  <p className="mb-1 font-semibold text-soft">{t({ am: "የመጽሐፍ ቅዱስ ቃል", en: "Bible Quote" })}</p>
+                <div className="rounded-md border-l-2 border-black/20 pl-3">
+                  <p className="mb-1 font-semibold text-soft">
+                    <span className="inline-flex items-center gap-2">
+                      <LuBookOpen size={15} />
+                      {t({ am: "Bible Quote", en: "Bible Quote" })}
+                    </span>
+                  </p>
                   <p className="font-medium">{scene.verse.ref}</p>
-                  <p className="mt-1">{t(scene.verse.text)}</p>
+                  <p className="mt-1 pl-4 indent-6">{t(scene.verse.text)}</p>
                 </div>
 
-                <div>
-                  <p className="mb-1 font-semibold text-soft">{t({ am: "እንደገና አስብ", en: "Reflection" })}</p>
-                  <p>{t(scene.reflection)}</p>
+                <div className="rounded-md border-l-2 border-black/20 pl-3">
+                  <p className="mb-1 font-semibold text-soft">
+                    <span className="inline-flex items-center gap-2">
+                      <LuLightbulb size={15} />
+                      {t({ am: "Reflection", en: "Reflection" })}
+                    </span>
+                  </p>
+                  <p className="pl-4 indent-6">{t(scene.reflection)}</p>
                 </div>
               </div>
             </motion.div>

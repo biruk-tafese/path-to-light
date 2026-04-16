@@ -3,36 +3,36 @@ import type { EmotionChoice, Scene } from "@/lib/types";
 export const scenes: Scene[] = [
   {
     id: "promise",
-    title: { am: "የተስፋ መጀመሪያ", en: "The First Promise" },
+    title: { am: "የተስፋው መጀመሪያ", en: "The First Promise" },
     text: {
-      am: "በጨለማ ዘመን መካከል ብርሃን እንደሚመጣ ቃል ተሰጠ።",
+      am: "በጨለማና በድንቁርና ዘመን መካከል፣ ብርሃን ወደ ዓለም እንደሚመጣ የሚበስር ታላቅ ተስፋ ተሰጠ።",
       en: "In a dark age, a promise was spoken that light would come.",
     },
     historical: {
-      year: { am: "ክ.በ. 700 አካባቢ", en: "Around 700 BCE" },
+      year: { am: "ከክርስቶስ ልደት በፊት 700 ዓመተ ዓለም ገደማ", en: "Around 700 BCE" },
       location: { am: "ይሁዳ", en: "Judah" },
       context: {
-        am: "አስቸጋሪ ፖለቲካዊ ጊዜ፣ ሕዝቡ በፍርሃት ውስጥ ነበር።",
+        am: "ሕዝቡ በታላቅ የፖለቲካ ውጥረትና በፍርሃት ውስጥ የነበሩበት አስቸጋሪ ዘመን ነበር።",
         en: "A tense political era where people lived with fear and uncertainty.",
       },
     },
     biblical: {
-      reference: { am: "ኢሳይያስ 9:2", en: "Isaiah 9:2" },
+      reference: { am: "ትንቢተ ኢሳይያስ 9:2", en: "Isaiah 9:2" },
       excerpt: {
-        am: "በጨለማ የሚሄዱ ሕዝቦች ታላቅ ብርሃን አዩ።",
+        am: "በጨለማ የሄደ ሕዝብ ታላቅ ብርሃን አየ፤ በሞት ጥላ አገርም ለኖሩ ብርሃን ወጣላቸው።",
         en: "The people walking in darkness have seen a great light.",
       },
     },
     wordsActions: {
-      am: "እግዚአብሔር በምዕራብ እንኳን ተስፋ አለ ብሎ አናገረ።",
+      am: "እግዚአብሔር ገና ንጋቱ ሳይታይ፣ በጨለማው መካከል ተስፋ መኖሩን ለሕዝቡ ተናገረ።",
       en: "God spoke hope even before the dawn was visible.",
     },
     evidence: {
-      am: "የቅዱስ ጽሑፍ ቅጂዎች እነዚህ ትንቢቶች በብዙ ክፍለ ዘመናት የተጠበቁ መሆናቸውን ያሳያሉ።",
+      am: "ጥንታውያን የብራና ቅጂዎች እነዚህ ትንቢቶች ለብዙ ክፍለ ዘመናት ሳይበረዙ ተጠብቀው መቆየታቸውን ያረጋግጣሉ።",
       en: "Ancient manuscript traditions show these prophecies were preserved across centuries.",
     },
     spiritualMeaning: {
-      am: "ተስፋ በጨለማ መካከል ይጀምራል።",
+      am: "እውነተኛ ተስፋ የሚጀምረው በጨለማው መካከል ነው።",
       en: "Hope can begin in the middle of darkness.",
     },
     audio: "/audio/narration/promise.mp3",
@@ -41,36 +41,36 @@ export const scenes: Scene[] = [
   },
   {
     id: "birth",
-    title: { am: "ጸጥ ሌሊት ውስጥ ልደት", en: "Birth in a Quiet Night" },
+    title: { am: "በጸጥታ ሌሊት የተከናወነ ልደት", en: "Birth in a Quiet Night" },
     text: {
-      am: "ታላቅ ታሪክ በትንሽ ስፍራ በጸጥታ ተጀመረ።",
+      am: "የዓለምን ታሪክ የለወጠው ታላቅ ክስተት፣ በቤተልሔም በረት ውስጥ በታላቅ ትሕትና ተጀመረ።",
       en: "A great story began quietly in a small place.",
     },
     historical: {
-      year: { am: "ክ.አ. 4-6 አካባቢ", en: "Around 6-4 BCE" },
+      year: { am: "ከክርስቶስ ልደት በፊት ከ4-6 ዓመተ ዓለም ገደማ", en: "Around 6-4 BCE" },
       location: { am: "ቤተልሔም", en: "Bethlehem" },
       context: {
-        am: "ይሁዳ በሮማዊ ግዛት ስር ነበር።",
+        am: "ይሁዳ በሮማውያን የቅኝ ግዛትና በታላቁ ሄሮድስ የጭቆና አገዛዝ ሥር ነበረች።",
         en: "Judea was under Roman imperial administration.",
       },
     },
     biblical: {
-      reference: { am: "ሉቃስ 2:11", en: "Luke 2:11" },
+      reference: { am: "የሉቃስ ወንጌል 2:11", en: "Luke 2:11" },
       excerpt: {
-        am: "ዛሬ አዳኝ ተወለደላችሁ።",
+        am: "ዛሬ በዳዊት ከተማ መድኃኒት እርሱም ክርስቶስ ጌታ የሆነ ተወልዶላችኋልና።",
         en: "Today a Savior has been born to you.",
       },
     },
     wordsActions: {
-      am: "ሰማያዊ መልእክት በፍርሃት ላይ ሰላምን አመጣ።",
+      am: "ሰማያዊው የምሥራች በሰው ልጆች ልብ ውስጥ በነገሠው ፍርሃት ላይ የሰላምን ብርሃን አበራ።",
       en: "A heavenly message brought peace into fearful hearts.",
     },
     evidence: {
-      am: "ቤተልሔም እና የዘመኑ ባህላዊ መረጃዎች እነዚህን ትርጓሜዎች ከታሪካዊ አውድ ጋር ያጣጣማሉ።",
+      am: "የቤተልሔም ታሪካዊ አቀማመጥና የዘመኑ ባህላዊ መረጃዎች ከወንጌል ዘገባዎች ጋር ፍጹም ይጣጣማሉ።",
       en: "Regional records and cultural context from Bethlehem align with the period described.",
     },
     spiritualMeaning: {
-      am: "ብርሃን በትህትና ይገባል።",
+      am: "የእግዚአብሔር ብርሃን ወደ ዓለም የሚገባው በትሕትና ነው።",
       en: "Light often enters through humility.",
     },
     audio: "/audio/narration/birth.mp3",
@@ -79,36 +79,36 @@ export const scenes: Scene[] = [
   },
   {
     id: "ministry",
-    title: { am: "በሕዝብ መካከል መራመድ", en: "Walking Among People" },
+    title: { am: "በሰዎች መካከል መመላለስ", en: "Walking Among People" },
     text: {
-      am: "እርሱ ደካሞችን አገኘ፣ ቁስለኞችን ነካ።",
+      am: "ኢየሱስ በመካከላችን ተመላለሰ፤ የዛሉትን አበረታ፣ የቆሰሉትንም ልባቸውን ጠገነ።",
       en: "He met the weary and touched the wounded.",
     },
     historical: {
-      year: { am: "ክ.አ. 27-30", en: "Around 27-30 CE" },
+      year: { am: "ከክርስቶስ ልደት በኋላ 27-30 ዓመተ ምሕረት", en: "Around 27-30 CE" },
       location: { am: "ገሊላ እና ይሁዳ", en: "Galilee and Judea" },
       context: {
-        am: "በከባድ ግብር እና ማኅበራዊ ግፍ የተጫነ ማህበር።",
+        am: "ሕዝቡ በከባድ ግብርና በማኅበራዊ ግፍ ተጭኖ በነበረበት ጊዜ የነጻነትን ቃል አበሰረ።",
         en: "Communities burdened by taxation, hierarchy, and social pressure.",
       },
     },
     biblical: {
-      reference: { am: "ማቴዎስ 11:28", en: "Matthew 11:28" },
+      reference: { am: "የማቴዎስ ወንጌል 11:28", en: "Matthew 11:28" },
       excerpt: {
-        am: "ደክማችሁ የተሸከማችሁም ሁላችሁ ወደ እኔ ኑ።",
+        am: "እናንተ ደካሞች ሸክማችሁ የከበደ ሁሉ፥ ወደ እኔ ኑ፥ እኔም አሳርፋችኋለሁ።",
         en: "Come to me, all who are weary and burdened.",
       },
     },
     wordsActions: {
-      am: "ሕመምን በቃል እና በርህራሄ አዳነ።",
+      am: "የሰዎችን ሕመም በርኅራኄ ተመለከተ፤ በቃሉም የታመሙትንና ልባቸው የተሰበረውን ፈወሰ።",
       en: "He answered pain with words and acts of compassion.",
     },
     evidence: {
-      am: "የመጀመሪያ ክፍለ ዘመን የይሁዳ ማህበረሰብ አውድ የወንጌል ታሪኮችን በተመጣጣኝ መልኩ ያበረታታል።",
+      am: "የመጀመሪያው ክፍለ ዘመን የአይሁድ ማኅበረሰብ አውድ በወንጌላት ውስጥ የተጠቀሱትን ታሪኮች ትክክለኛነት ያረጋግጣል።",
       en: "First-century Judean social context supports the everyday settings described in the Gospels.",
     },
     spiritualMeaning: {
-      am: "ምሕረት ወደ ደካማው ይሄዳል።",
+      am: "መለኮታዊ ምሕረት ወደ ደካማውና ወደ ተናቀው ይሄዳል።",
       en: "Mercy walks toward the weary.",
     },
     audio: "/audio/narration/ministry.mp3",
@@ -119,34 +119,34 @@ export const scenes: Scene[] = [
     id: "cross",
     title: { am: "የፍቅር ዋጋ", en: "The Cost of Love" },
     text: {
-      am: "በመስቀል ላይ ዝምታ ነበር፣ ነገር ግን ፍቅር ተናገረ።",
+      am: "በመስቀል ላይ ታላቅ ዝምታ ሰፍኖ ነበር፤ ሆኖም ያ ዝምታ ከቃላት በላይ ስለ ፍቅር ተናገረ።",
       en: "At the cross there was silence, yet love was speaking.",
     },
     historical: {
-      year: { am: "ክ.አ. 30 አካባቢ", en: "Around 30 CE" },
-      location: { am: "የሩሳሌም", en: "Jerusalem" },
+      year: { am: "ከክርስቶስ ልደት በኋላ 30 ዓመተ ምሕረት ገደማ", en: "Around 30 CE" },
+      location: { am: "ኢየሩሳሌም", en: "Jerusalem" },
       context: {
-        am: "በፋሲካ ወቅት ከተማዋ በብዙ ሕዝብ ተሞልታ ነበር።",
+        am: "በፋሲካ በዓል ወቅት ከተማዋ በሕዝብ ተጥለቅልቃና በሮማውያን ጥብቅ ጥበቃ ሥር ነበረች።",
         en: "The city was crowded during Passover under close Roman security.",
       },
     },
     biblical: {
-      reference: { am: "ዮሐንስ 19:30", en: "John 19:30" },
+      reference: { am: "የዮሐንስ ወንጌል 19:30", en: "John 19:30" },
       excerpt: {
-        am: "ተፈጸመ።",
+        am: "ኢየሱስም ሆምጣጤውን ከተቀበለ በኋላ፦ ተፈጸመ አለ፤ ራሱንም አዘንብሎ ነፍሱን አሳልፎ ሰጠ።",
         en: "It is finished.",
       },
     },
     wordsActions: {
-      am: "በስቃይ ውስጥም ምሕረትን አልተወም።",
+      am: "በስቃዩና በመከራው መካከል እንኳን፣ ለበደሉት ምሕረትንና ይቅርታን ከመለመን አልተቆጠበም።",
       en: "Even in suffering, He did not abandon mercy.",
     },
     evidence: {
-      am: "የሮማዊ የመስቀል ቅጣት ሥርዓት በዚያን ዘመን በስፋት የታወቀ ነበር።",
+      am: "የሮማውያን የመስቀል ቅጣት አሰቃቂ ሥርዓት በታሪክና በአርኪኦሎጂ ማስረጃዎች በስፋት የተረጋገጠ ነው።",
       en: "Roman crucifixion practices are historically documented in this period.",
     },
     spiritualMeaning: {
-      am: "ፍቅር እስከ መጨረሻ ይጸናል።",
+      am: "እውነተኛ ፍቅር እስከ መጨረሻው መሥዋዕትነት ድረስ ይጸናል።",
       en: "Love remains faithful to the end.",
     },
     audio: "/audio/narration/cross.mp3",
@@ -157,34 +157,34 @@ export const scenes: Scene[] = [
     id: "resurrection",
     title: { am: "አዲስ ንጋት", en: "A New Dawn" },
     text: {
-      am: "መቃብሩ መጨረሻ አልሆነም፤ ብርሃን ዳግም ተበራ።",
+      am: "መቃብሩ መጨረሻ አልነበረም፤ በሦስተኛው ቀን ሞትን ድል አድርጎ በመነሣት ለዓለም ብርሃን ሆነ።",
       en: "The tomb was not the end; light rose again.",
     },
     historical: {
-      year: { am: "ክ.አ. 30 አካባቢ", en: "Around 30 CE" },
-      location: { am: "የሩሳሌም አቅራቢያ", en: "Near Jerusalem" },
+      year: { am: "ከክርስቶስ ልደት በኋላ 30 ዓመተ ምሕረት ገደማ", en: "Around 30 CE" },
+      location: { am: "በኢየሩሳሌም አቅራቢያ", en: "Near Jerusalem" },
       context: {
-        am: "የሐዘን እና ግርማ ሰዓት ወደ ተስፋ ተለወጠ።",
+        am: "የሐዘንና የፍርሃት ሰዓት፣ ዓለምን ወደለወጠ ታላቅ ተስፋና ደስታ ተቀየረ።",
         en: "A moment of grief and fear turned into hope.",
       },
     },
     biblical: {
-      reference: { am: "ማቴዎስ 28:6", en: "Matthew 28:6" },
+      reference: { am: "የማቴዎስ ወንጌል 28:6", en: "Matthew 28:6" },
       excerpt: {
-        am: "እርሱ ተነስቶአል።",
+        am: "እንደ ተናገረ ተነሥቶአልና በዚህ የለም፤ የተኛበትን ስፍራ ኑና እዩ።",
         en: "He is risen.",
       },
     },
     wordsActions: {
-      am: "ሞት የመጨረሻ ቃል እንዳይሆን አሳየ።",
+      am: "ሞት የመጨረሻ ቃል እንዳልሆነና ለሰው ልጆች ሁሉ የዘላለም ሕይወት መኖሩን አረጋገጠ።",
       en: "He showed that death would not have the final word.",
     },
     evidence: {
-      am: "የመጀመሪያ ማህበረ ክርስቲያን ምስክርነቶች በፍጥነት መተላለፋቸው ይህን ትርኢት በታሪክ ያሳያል።",
+      am: "የመጀመሪያዎቹ ክርስቲያኖች ይህን እውነት ለማብሰር ሕይወታቸውን አሳልፈው መስጠታቸው የታሪክ ትልቅ ምዕራፍ ነው።",
       en: "The rapid spread of early resurrection testimony is a notable historical feature.",
     },
     spiritualMeaning: {
-      am: "አዲስ ሕይወት ይቻላል።",
+      am: "በክርስቶስ ትንሣኤ አዲስ ሕይወትና ተስፋ ለሁላችን ተሰጥቷል።",
       en: "New life is possible.",
     },
     audio: "/audio/narration/resurrection.mp3",
@@ -193,36 +193,36 @@ export const scenes: Scene[] = [
   },
   {
     id: "response",
-    title: { am: "አሁን ምን ልታደርግ ነው?", en: "What Should You Do Now?" },
+    title: { am: "የእርስዎ ምላሽ ምንድን ነው?", en: "What Should You Do Now?" },
     text: {
-      am: "እምነት ካለህ በእሱ ቀስ ብለህ ተቀመጥ፤ እምነት ካልነበረህም በጸጥታ ጥያቄ ይዘህ ቀጥል።",
+      am: "ይህን ታሪክ ሲሰሙ እምነት ካደረብዎት በዚያ እውነት ውስጥ ያርፉ፤ ገና ጥያቄ ካለዎትም በሰላም መፈለግዎን ይቀጥሉ።",
       en: "If you believe, stay with it gently. If you do not yet believe, keep going with your questions in peace.",
     },
     historical: {
       year: { am: "ዛሬ", en: "Today" },
-      location: { am: "የራስህ ልብ", en: "Your own heart" },
+      location: { am: "በልብዎ ውስጥ", en: "Your own heart" },
       context: {
-        am: "ይህ ክፍል ለማሳየት እንጂ ለመጫን አይደለም።",
+        am: "ይህ ጉዞ ዓላማው እውነትን ማሳየት እንጂ ማንንም ማስገደድ አይደለም።",
         en: "This moment is here to guide, not to pressure.",
       },
     },
     biblical: {
-      reference: { am: "ዮሐንስ 20:31", en: "John 20:31" },
+      reference: { am: "የዮሐንስ ወንጌል 20:31", en: "John 20:31" },
       excerpt: {
-        am: "እነዚህ የተጻፉት ታምነው ሕይወት እንዲኖር ነው።",
+        am: "ነገር ግን ኢየሱስ እርሱ ክርስቶስ የእግዚአብሔር ልጅ እንደ ሆነ ታምኑ ዘንድ፥ አምናችሁም በስሙ ሕይወት ይሆንላችሁ ዘንድ ይህ ተጽፎአል።",
         en: "These are written so that you may believe and have life.",
       },
     },
     wordsActions: {
-      am: "አንተን የሚገፋ አይደለም፤ አንተን በቀስታ ይጋብዛል።",
+      am: "እግዚአብሔር በማንገላታት ሳይሆን፣ በፍቅርና በጸጥታ ወደ ራሱ ይጋብዝዎታል።",
       en: "This does not push you; it gently invites you.",
     },
     evidence: {
-      am: "ሰዎች ብዙ ጊዜ መጀመሪያ በጥያቄ ይጀምራሉ። ያ ደግሞ እዚህ ቦታ ይችላል።",
+      am: "ብዙዎች ወደ እውነት የመጡት ከልብ በመነጨ ጥያቄ ነው፤ የእርስዎም ጥያቄ እዚህ ስፍራ ክብር አለው።",
       en: "Many people begin with questions. That is welcome here too.",
     },
     spiritualMeaning: {
-      am: "ለማወቅ መጠየቅ ጥሩ መጀመሪያ ነው።",
+      am: "እውነትን ለማወቅ በቅንነት መጠየቅ መልካም ጅምር ነው።",
       en: "Asking honest questions is a good beginning.",
     },
     audio: "/audio/narration/response.mp3",
@@ -234,36 +234,36 @@ export const scenes: Scene[] = [
 export const emotionChoices: EmotionChoice[] = [
   {
     key: "lost",
-    label: { am: "ጠፍቻለሁ", en: "Lost" },
+    label: { am: "መጥፋት", en: "Lost" },
     hint: {
-      am: "ከጨለማ ወደ ብርሃን የሚመራ መንገድ",
+      am: "ከጨለማ ወደ ብርሃን የሚመራ የእውነት መንገድ",
       en: "A path that moves from darkness to light",
     },
     sceneIds: ["promise", "cross", "resurrection", "response"],
   },
   {
     key: "tired",
-    label: { am: "ደክሜአለሁ", en: "Tired" },
+    label: { am: "መድከም", en: "Tired" },
     hint: {
-      am: "የምሕረት እና እረፍት ጉዞ",
+      am: "መለኮታዊ ምሕረትና እውነተኛ እረፍት የሚገኝበት ጉዞ",
       en: "A journey of mercy and rest",
     },
     sceneIds: ["ministry", "cross", "resurrection", "response"],
   },
   {
     key: "hopeful",
-    label: { am: "ተስፋ አለኝ", en: "Hopeful" },
+    label: { am: "ተስፋ ማድረግ", en: "Hopeful" },
     hint: {
-      am: "ተስፋ ከትንቢት እስከ ትንሣኤ",
+      am: "ከትቢት እስከ ትንሣኤ የጸና የተስፋ ጉዞ",
       en: "Hope from promise to resurrection",
     },
     sceneIds: ["promise", "birth", "resurrection", "response"],
   },
   {
     key: "searching",
-    label: { am: "እፈልጋለሁ", en: "Searching" },
+    label: { am: "መፈለግ", en: "Searching" },
     hint: {
-      am: "ትርጉምን እና ሰላምን በቀስታ መፈለግ",
+      am: "የሕይወትን ትርጉምና ሰላምን በጸጥታ የመፈለግ ጉዞ",
       en: "A quiet search for peace and meaning",
     },
     sceneIds: ["birth", "ministry", "cross", "resurrection", "response"],

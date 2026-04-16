@@ -15,7 +15,7 @@ function WordByWord({ text }: { text: string }) {
   const words = text.split(" ");
 
   return (
-    <p className="max-w-3xl text-base leading-8 text-soft md:text-lg">
+    <p className="max-w-3xl pl-5 text-base leading-8 text-soft indent-6 md:text-lg">
       {words.map((word, index) => (
         <motion.span
           key={`${word}-${index}`}
@@ -70,9 +70,10 @@ export function ScrollStoryEngine() {
 
   return (
     <div className="space-y-4">
-      <p className="mx-auto max-w-3xl px-3 text-sm leading-7 text-soft md:px-0 md:text-base">
-        {t(timelineCopy.intro)}
-      </p>
+      <div className="mx-auto max-w-3xl rounded-xl border border-black/10 bg-white/35 px-4 py-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-soft md:text-sm">🎯 {t({ am: "ትኩረት", en: "Focus" })}</p>
+        <p className="mt-1 pl-4 text-sm leading-7 text-soft indent-6 md:text-base">{t(timelineCopy.intro)}</p>
+      </div>
 
       <div
         ref={containerRef}
@@ -87,34 +88,38 @@ export function ScrollStoryEngine() {
           <div className="flex h-full items-center justify-center">
             <article className="manuscript-scroll w-full max-w-3xl p-6 md:p-10">
               <p className="text-sm tracking-wide text-soft">📅 {t(scene.historical.year)} • 📍 {t(scene.historical.location)}</p>
-              <h3 className="mt-2 font-serif text-3xl md:text-5xl">{t(scene.title)}</h3>
-              <p className="mt-3 text-soft">{t(scene.text)}</p>
+              <h3 className="mt-2 font-serif text-3xl md:text-5xl">🧭 {t(scene.title)}</h3>
+
+              <div className="mt-3 rounded-lg border-l-4 border-black/25 bg-black/5 px-3 py-2">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-soft md:text-sm">📝 {t({ am: "ዋና ርእስ", en: "Main Topic" })}</p>
+                <p className="mt-1 pl-4 text-soft indent-6">{t(scene.text)}</p>
+              </div>
 
               <div className="mt-6 space-y-4 text-sm md:text-base">
-                <div>
+                <div className="rounded-md border-l-2 border-black/20 pl-3">
                   <p className="font-semibold text-soft">📖 {t(timelineCopy.labels.scripture)}</p>
                   <p className="font-medium">{t(scene.biblical.reference)}</p>
-                  <p className="mt-1">{t(scene.biblical.excerpt)}</p>
+                  <p className="mt-1 pl-4 indent-6">{t(scene.biblical.excerpt)}</p>
                 </div>
 
-                <div>
-                  <p className="font-semibold text-soft">{t({ am: "ምን ተከሰተ?", en: "What happened?" })}</p>
+                <div className="rounded-md border-l-2 border-black/20 pl-3">
+                  <p className="font-semibold text-soft">🎬 {t({ am: "ምን ተከሰተ?", en: "What happened?" })}</p>
                   <WordByWord text={t(scene.wordsActions)} />
                 </div>
 
-                <div>
-                  <p className="font-semibold text-soft">{t({ am: "በዚያን ዘመን", en: "At that time" })}</p>
-                  <p>{t(scene.historical.context)}</p>
+                <div className="rounded-md border-l-2 border-black/20 pl-3">
+                  <p className="font-semibold text-soft">🏺 {t({ am: "በዚያን ዘመን", en: "At that time" })}</p>
+                  <p className="pl-4 indent-6">{t(scene.historical.context)}</p>
                 </div>
 
-                <div>
-                  <p className="font-semibold text-soft">{t({ am: "ለምን አስፈላጊ ነው?", en: "Why it matters" })}</p>
-                  <p>{t(scene.evidence)}</p>
+                <div className="rounded-md border-l-2 border-black/20 pl-3">
+                  <p className="font-semibold text-soft">🔎 {t({ am: "ለምን አስፈላጊ ነው?", en: "Why it matters" })}</p>
+                  <p className="pl-4 indent-6">{t(scene.evidence)}</p>
                 </div>
 
-                <div>
+                <div className="rounded-md border-l-2 border-black/20 pl-3">
                   <p className="font-semibold text-soft">🕊️ {t(timelineCopy.labels.spiritual)}</p>
-                  <p>{t(scene.spiritualMeaning)}</p>
+                  <p className="pl-4 indent-6">{t(scene.spiritualMeaning)}</p>
                 </div>
               </div>
             </article>
