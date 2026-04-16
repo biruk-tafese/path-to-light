@@ -72,16 +72,16 @@ export function ScrollStoryEngine() {
     <div className="space-y-6">
       <div
         ref={containerRef}
-        className="h-screen snap-y ssnap-mandatory overflow-y-auto rounded-[2rem] px-0 md:px-2 transition-[background] duration-[2200ms]"
+        className="h-screen snap-y snap-mandatory overflow-y-auto rounded-[2rem] px-0 md:px-2 transition-[background] duration-[2200ms]"
         style={{ background: "transparent" }}
       >
       {scenes.map((scene) => (
         <section
           key={scene.id}
-          className="scene-block h-screen snap-start px-0 py-5 md:px-8 md:py-8"
+          className="scene-block min-h-screen snap-start px-0 py-8 md:h-screen md:px-8 md:py-8"
         >
-          <div className="flex h-full items-center justify-center">
-            <article className="manuscript-scroll w-full max-w-3xl rounded-none p-4 md:rounded-[2rem] md:p-10">
+          <div className="flex h-full items-start justify-center md:items-center">
+            <article className="manuscript-scroll w-full max-w-3xl rounded-none p-5 md:rounded-[2rem] md:p-10">
               <p className="text-sm tracking-wide text-soft">📅 {t(scene.historical.year)} • 📍 {t(scene.historical.location)}</p>
               <h3 className="mt-2 font-serif text-3xl md:text-5xl">🧭 {t(scene.title)}</h3>
 
@@ -90,7 +90,7 @@ export function ScrollStoryEngine() {
                 <p className="mt-1 pl-4 text-soft indent-6">{t(scene.text)}</p>
               </div>
 
-              <div className="mt-6 space-y-4 text-sm md:text-base">
+              <div className="mt-7 space-y-5 text-sm md:mt-6 md:space-y-4 md:text-base">
                 <div className="rounded-md border-l-2 border-black/20 pl-3">
                   <p className="font-semibold text-soft">📖 {t(timelineCopy.labels.scripture)}</p>
                   <p className="font-medium">{t(scene.biblical.reference)}</p>
