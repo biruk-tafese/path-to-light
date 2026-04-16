@@ -216,29 +216,10 @@ export default function ScripturePage() {
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-          <div className="space-y-2">
-            <h1 className="font-serif text-4xl md:text-5xl">{t(scriptureCopy.title)}</h1>
-            <p className="text-soft">{t(scriptureCopy.intro)}</p>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setIsComposerOpen(true)}
-            className="inline-flex items-center gap-2 self-start rounded-full border border-black/10 bg-white/45 px-4 py-2 text-sm text-soft transition-colors hover:bg-white/65"
-          >
-            <LuPlus size={16} />
-            {t({ am: "መጽሐፍ ቅዱስ አጋራ", en: "Share Scripture" })}
-          </button>
-        </div>
-      </div>
-
       <div className="space-y-3 rounded-[2rem] border border-black/10 bg-white/30 p-4 md:p-5">
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2 className="font-serif text-2xl md:text-3xl">{t({ am: "የማህበራዊ ጉዞ", en: "Community Feed" })}</h2>
-            <p className="mt-1 text-sm text-soft">{t({ am: "ቃሉን ከሰዎች ጋር አጋር፤ ምስል አክል፣ ውድድር ሳይሆን ምስክርነት ሁን።", en: "Share scripture with others. Add an image and let it be witness, not competition." })}</p>
           </div>
 
           <button
