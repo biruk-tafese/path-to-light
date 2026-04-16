@@ -42,3 +42,50 @@ export type EmotionChoice = {
   hint: LocalizedText;
   sceneIds: string[];
 };
+
+export type WeeklyProgram = {
+  day: LocalizedText;
+  time: string;
+  activity: LocalizedText;
+};
+
+export type ChurchContact = {
+  phone: string;
+  email?: string;
+  whatsapp?: string;
+};
+
+export type ChurchEvent = {
+  title: LocalizedText;
+  description: LocalizedText;
+  schedule: LocalizedText;
+};
+
+export type Church = {
+  id: string;
+  name: LocalizedText;
+  leader: LocalizedText;
+  leaderContact: ChurchContact;
+  locationName: LocalizedText;
+  address: LocalizedText;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  statementOfFaith: LocalizedText;
+  weeklyPrograms: WeeklyProgram[];
+  events: ChurchEvent[];
+  socials: {
+    website?: string;
+    facebook?: string;
+    telegram?: string;
+    youtube?: string;
+    instagram?: string;
+  };
+  donation: {
+    method: LocalizedText;
+    accountNumber: string;
+    accountName: LocalizedText;
+  };
+  image: string;
+};

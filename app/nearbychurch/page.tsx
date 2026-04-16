@@ -1,84 +1,84 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import { useLanguage } from "@/components/providers/language-provider";
+import { churches } from "@/data/churches";
+import type { Church, LocalizedText, Locale } from "@/lib/types";
 
-type ChurchResult = {
-  id: string;
-  name: string;
+type UserLocation = {
   lat: number;
-  lon: number;
-  distanceKm: number;
-  address: string;
+  lng: number;
 };
 
-type OverpassElement = {
-  id: number;
-  type: "node" | "way" | "relation";
-  lat?: number;
-  lon?: number;
-  center?: {
-    lat: number;
-    lon: number;
-  };
-  tags?: Record<string, string>;
-};
-
-const OVERPASS_URL = "https://overpass-api.de/api/interpreter";
-
-function toRadians(value: number) {
-  return (value * Math.PI) / 180;
+function localize(value: LocalizedText, locale: Locale) {
+  return locale === "am" ? value.am : value.en;
 }
 
-function distanceKm(fromLat: number, fromLon: number, toLat: number, toLon: number) {
+function distanceKm(from: UserLocation, to: UserLocation) {
   const earthRadiusKm = 6371;
-  const dLat = toRadians(toLat - fromLat);
-  const dLon = toRadians(toLon - fromLon);
+  const dLat = ((to.lat - from.lat) * Math.PI) / 180;
+  const dLon = ((to.lng - from.lng) * Math.PI) / 180;
+  const fromLat = (from.lat * Math.PI) / 180;
+  const toLat = (to.lat * Math.PI) / 180;
+
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRadians(fromLat)) * Math.cos(toRadians(toLat)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return earthRadiusKm * c;
+    Math.cos(fromLat) * Math.cos(toLat) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+  return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
-function churchName(tags?: Record<string, string>) {
-  if (!tags) {
-    return "Christian Church";
-  }
-  return tags.name || tags["name:en"] || tags["official_name"] || "Christian Church";
-}
-
-function churchAddress(tags?: Record<string, string>) {
-  if (!tags) {
-    return "Address not provided";
+function matchesQuery(church: Church, query: string) {
+  if (!query.trim()) {
+    return true;
   }
 
-  const parts = [
-    tags["addr:city"],
-    tags["addr:suburb"],
-    tags["addr:street"],
-    tags["addr:housenumber"],
-  ].filter(Boolean);
+  const haystack = [
+    church.name.am,
+    church.name.en,
+    church.leader.am,
+    church.leader.en,
+    church.locationName.am,
+    church.locationName.en,
+    church.address.am,
+    church.address.en,
+    church.statementOfFaith.am,
+    church.statementOfFaith.en,
+    church.socials.website ?? "",
+    church.socials.facebook ?? "",
+    church.socials.telegram ?? "",
+    church.socials.youtube ?? "",
+    church.socials.instagram ?? "",
+    church.leaderContact.phone,
+    church.leaderContact.email ?? "",
+    church.leaderContact.whatsapp ?? "",
+    church.donation.accountNumber,
+    church.donation.accountName.am,
+    church.donation.accountName.en,
+    ...church.events.flatMap((event) => [event.title.am, event.title.en, event.description.am, event.description.en, event.schedule.am, event.schedule.en]),
+    ...church.weeklyPrograms.flatMap((program) => [program.day.am, program.day.en, program.activity.am, program.activity.en, program.time]),
+  ]
+    .join(" ")
+    .toLowerCase();
 
-  return parts.length ? parts.join(", ") : "Address not provided";
+  return haystack.includes(query.toLowerCase());
 }
 
 export default function NearbyChurchPage() {
-  const { t } = useLanguage();
-  const [radiusKm, setRadiusKm] = useState(8);
-  const [isSearching, setIsSearching] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [churches, setChurches] = useState<ChurchResult[]>([]);
+  const { t, locale } = useLanguage();
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [locationStatus, setLocationStatus] = useState<"idle" | "loading" | "granted" | "denied">("idle");
+  const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
 
-  const radiusMeters = useMemo(() => Math.round(radiusKm * 1000), [radiusKm]);
-
-  async function findNearbyChurches() {
-    setError(null);
-    setIsSearching(true);
+  const requestLocation = async () => {
+    setLocationStatus("loading");
 
     try {
       if (!navigator.geolocation) {
-        throw new Error(t({ am: "ይህ አሳሽ የአካባቢ አገልግሎት አይደግፍም።", en: "This browser does not support geolocation." }));
+        setLocationStatus("denied");
+        return;
       }
 
       const position = await new Promise<GeolocationPosition>((resolve, reject) => {
@@ -89,148 +89,198 @@ export default function NearbyChurchPage() {
         });
       });
 
-      const { latitude, longitude } = position.coords;
-
-      const query = `
-        [out:json][timeout:30];
-        (
-          node(around:${radiusMeters},${latitude},${longitude})["amenity"="place_of_worship"]["religion"="christian"];
-          way(around:${radiusMeters},${latitude},${longitude})["amenity"="place_of_worship"]["religion"="christian"];
-          relation(around:${radiusMeters},${latitude},${longitude})["amenity"="place_of_worship"]["religion"="christian"];
-        );
-        out center tags;
-      `;
-
-      const response = await fetch(OVERPASS_URL, {
-        method: "POST",
-        body: query,
-      });
-
-      if (!response.ok) {
-        throw new Error(t({ am: "የቤተ ክርስቲያን መረጃ ማግኘት አልተቻለም።", en: "Unable to fetch church data." }));
-      }
-
-      const data = (await response.json()) as { elements: OverpassElement[] };
-
-      const parsed = data.elements
-        .map((element) => {
-          const lat = element.lat ?? element.center?.lat;
-          const lon = element.lon ?? element.center?.lon;
-          if (typeof lat !== "number" || typeof lon !== "number") {
-            return null;
-          }
-
-          const km = distanceKm(latitude, longitude, lat, lon);
-          return {
-            id: `${element.type}-${element.id}`,
-            name: churchName(element.tags),
-            lat,
-            lon,
-            distanceKm: km,
-            address: churchAddress(element.tags),
-          } satisfies ChurchResult;
-        })
-        .filter((item): item is ChurchResult => item !== null)
-        .sort((a, b) => a.distanceKm - b.distanceKm)
-        .slice(0, 30);
-
-      setChurches(parsed);
-    } catch (caughtError) {
-      setChurches([]);
-      setError(
-        caughtError instanceof Error
-          ? caughtError.message
-          : t({ am: "ያልታወቀ ስህተት ተከስቷል።", en: "An unknown error occurred." }),
-      );
-    } finally {
-      setIsSearching(false);
+      setUserLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
+      setLocationStatus("granted");
+    } catch {
+      setUserLocation(null);
+      setLocationStatus("denied");
     }
-  }
+  };
+
+  const filterOptions = useMemo(
+    () => [
+      { value: "all", label: t({ am: "ሁሉም ቤተክርስቲያኖች", en: "All churches" }) },
+      { value: "sarbet", label: t({ am: "ሳርቤት", en: "Sarbet" }) },
+      { value: "megenagna", label: t({ am: "መገናኛ", en: "Megenagna" }) },
+      { value: "kirkos", label: t({ am: "ቂርቆስ", en: "Kirkos" }) },
+      { value: "yeka", label: t({ am: "የካ", en: "Yeka" }) },
+      { value: "bole", label: t({ am: "ቦሌ", en: "Bole" }) },
+    ],
+    [t],
+  );
+
+  const visibleChurches = useMemo(() => {
+    return churches
+      .filter((church) => matchesQuery(church, query))
+      .filter((church) => {
+        if (filter === "all") {
+          return true;
+        }
+
+        const target = `${church.locationName.am} ${church.locationName.en} ${church.address.am} ${church.address.en}`.toLowerCase();
+        return target.includes(filter.toLowerCase());
+      })
+      .map((church) => {
+        const distance = userLocation ? distanceKm(userLocation, church.coordinates) : null;
+        return { church, distance };
+      })
+      .sort((a, b) => {
+        if (a.distance !== null && b.distance !== null) {
+          return a.distance - b.distance;
+        }
+
+        if (a.distance !== null) {
+          return -1;
+        }
+
+        if (b.distance !== null) {
+          return 1;
+        }
+
+        return localize(a.church.name, locale).localeCompare(localize(b.church.name, locale));
+      });
+  }, [filter, locale, query, userLocation]);
+
+  const suggestions = userLocation ? visibleChurches.slice(0, 3) : visibleChurches.slice(0, 3);
 
   return (
     <section className="space-y-6">
-      <div className="space-y-2">
-        <h1 className="font-serif text-4xl md:text-5xl">{t({ am: "ቅርብ ያሉ ቤተ ክርስቲያናት", en: "Nearby Church Finder" })}</h1>
-        <p className="text-soft">
-          {t({
-            am: "ቅርብ ያሉ ክርስቲያናዊ ቤተ ክርስቲያናትን ለማግኘት የአካባቢ ፍቃድ ይስጡ።",
-            en: "Allow location access to discover nearby Christian churches.",
-          })}
-        </p>
-      </div>
-
       <div className="surface-card rounded-[2rem] p-5 md:p-7">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <label className="flex max-w-sm flex-col gap-2 text-sm text-soft">
-            <span>{t({ am: "የፍለጋ ርቀት", en: "Search Radius" })}: {radiusKm} km</span>
-            <input
-              type="range"
-              min={2}
-              max={40}
-              step={1}
-              value={radiusKm}
-              onChange={(event) => setRadiusKm(Number(event.target.value))}
-            />
-          </label>
-
-          <button
-            type="button"
-            onClick={() => void findNearbyChurches()}
-            disabled={isSearching}
-            className="inline-flex items-center justify-center rounded-2xl bg-[color:var(--ink)] px-5 py-3 text-sm font-medium text-[color:var(--bg)] disabled:opacity-65"
-          >
-            {isSearching
-              ? t({ am: "በመፈለግ ላይ...", en: "Searching..." })
-              : t({ am: "ቅርብ ያሉ ቤተ ክርስቲያናትን ፈልግ", en: "Find Nearby Churches" })}
-          </button>
-        </div>
-
-        {error ? (
-          <p className="mt-4 rounded-xl border border-red-400/35 bg-red-100/45 px-4 py-3 text-sm text-red-800">
-            {error}
-          </p>
-        ) : null}
-      </div>
-
-      <div className="space-y-4">
-        {churches.length ? (
-          churches.map((church) => (
-            <article key={church.id} className="surface-card rounded-[2rem] p-5 md:p-6">
-              <h2 className="font-serif text-2xl">{church.name}</h2>
-              <p className="mt-1 text-soft">{church.address}</p>
-              <p className="mt-2 text-sm text-soft">
-                {t({ am: "ርቀት", en: "Distance" })}: {church.distanceKm.toFixed(2)} km
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div className="space-y-2">
+              <h1 className="font-serif text-4xl md:text-5xl">{t({ am: "ቅርብ ያሉ ቤተ ክርስቲያናት", en: "Nearby Churches" })}</h1>
+              <p className="max-w-3xl text-soft">
+                {t({
+                  am: "በአዲስ አበባ ያሉ ክርስቲያናዊ ቤተክርስቲያኖችን በፍለጋ እና በማጣሪያ ይመልከቱ።",
+                  en: "Browse Addis Ababa Christian churches with search and filtering.",
+                })}
               </p>
+            </div>
 
-              <div className="mt-4 flex flex-wrap gap-3">
-                <a
-                  href={`https://www.google.com/maps/search/?api=1&query=${church.lat},${church.lon}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-xl border border-black/10 bg-white/40 px-4 py-2 text-sm text-soft"
-                >
-                  {t({ am: "በካርታ ላይ ክፈት", en: "Open in Maps" })}
-                </a>
-                <a
-                  href={`https://www.openstreetmap.org/?mlat=${church.lat}&mlon=${church.lon}#map=17/${church.lat}/${church.lon}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-xl border border-black/10 bg-white/40 px-4 py-2 text-sm text-soft"
-                >
-                  OpenStreetMap
-                </a>
-              </div>
-            </article>
-          ))
-        ) : (
-          <p className="surface-card rounded-[2rem] p-5 text-soft md:p-6">
-            {t({
-              am: "ፍለጋ ለመጀመር የአካባቢ ፍቃድ ያግኙ እና ከላይ ያለውን አዝራር ይጫኑ።",
-              en: "Grant location access and press the button above to start finding nearby churches.",
-            })}
-          </p>
-        )}
+            <button
+              type="button"
+              onClick={() => void requestLocation()}
+              className="inline-flex items-center justify-center rounded-2xl bg-[color:var(--ink)] px-5 py-3 text-sm font-medium text-[color:var(--bg)]"
+            >
+              {locationStatus === "loading"
+                ? t({ am: "የአካባቢ ፍቃድ በመጠየቅ ላይ...", en: "Requesting location access..." })
+                : t({ am: "አካባቢዬን ፈትሽ", en: "Use My Location" })}
+            </button>
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_16rem]">
+            <label>
+              <span className="mb-2 block text-sm text-soft">{t({ am: "ፍለጋ", en: "Search" })}</span>
+              <input
+                value={query}
+                onChange={(event) => setQuery(event.target.value)}
+                placeholder={t({ am: "ቤተክርስቲያን, ሳርቤት, ፓስተር, ጸሎት...", en: "Church, Sarbet, pastor, prayer..." })}
+                className="w-full rounded-2xl border border-black/10 bg-white/55 px-4 py-3 outline-none placeholder:text-soft/70"
+              />
+            </label>
+
+            <label>
+              <span className="mb-2 block text-sm text-soft">{t({ am: "ማጣሪያ", en: "Filter" })}</span>
+              <select
+                value={filter}
+                onChange={(event) => setFilter(event.target.value)}
+                className="w-full rounded-2xl border border-black/10 bg-white/55 px-4 py-3 outline-none"
+              >
+                {filterOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3 text-sm text-soft">
+            <span>{t({ am: "የአቀማመጥ ሁኔታ", en: "Location status" })}: {locationStatus}</span>
+            {userLocation ? (
+              <span>
+                {t({ am: "አካባቢ", en: "Location" })}: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
+              </span>
+            ) : null}
+            <span>{t({ am: "ተገኙ", en: "Found" })}: {visibleChurches.length}</span>
+          </div>
+        </div>
       </div>
+
+      {userLocation ? (
+        <div className="surface-card rounded-[2rem] p-5 md:p-6">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="font-serif text-2xl md:text-3xl">{t({ am: "የእርስዎ ምርጥ ምክረ ሃሳቦች", en: "Top Suggestions Near You" })}</h2>
+            <p className="text-sm text-soft">{t({ am: "በርቀት መሰረት የተደረደሩ", en: "Ordered by distance" })}</p>
+          </div>
+          <div className="mt-4 flex gap-4 overflow-x-auto pb-2 [scroll-snap-type:x_mandatory]">
+            {suggestions.map(({ church, distance }) => (
+              <Link
+                key={`suggestion-${church.id}`}
+                href={`/nearbychurch/${church.id}`}
+                className="min-w-[16rem] snap-start rounded-[1.75rem] border border-black/10 bg-white/40 p-4"
+              >
+                <p className="text-xs uppercase tracking-[0.2em] text-soft">{distance !== null ? `${distance.toFixed(1)} km` : t({ am: "ቅርብ", en: "Nearby" })}</p>
+                <h3 className="mt-2 font-serif text-xl">{localize(church.name, locale)}</h3>
+                <p className="mt-1 text-sm text-soft">{localize(church.locationName, locale)}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      ) : null}
+
+      {visibleChurches.length ? (
+        <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          {visibleChurches.map(({ church, distance }) => (
+            <Link
+              key={church.id}
+              href={`/nearbychurch/${church.id}`}
+              className="group overflow-hidden rounded-[2rem] border border-black/10 bg-[color:var(--bg)] text-left transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl"
+            >
+              <div className="relative h-56">
+                <img
+                  src={church.image}
+                  alt={localize(church.name, locale)}
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(12,12,10,0.06),rgba(12,12,10,0.62))]" />
+                <div className="absolute inset-x-0 bottom-0 p-4 text-white">
+                  <p className="text-xs uppercase tracking-[0.22em] text-white/70">{localize(church.locationName, locale)}</p>
+                  <h2 className="mt-1 font-serif text-2xl leading-tight">{localize(church.name, locale)}</h2>
+                </div>
+              </div>
+
+              <div className="space-y-3 p-4 md:p-5">
+                <div className="flex items-center justify-between gap-3 text-sm text-soft">
+                  <span>{localize(church.leader, locale)}</span>
+                  <span>{distance !== null ? `${distance.toFixed(1)} km` : t({ am: "አካባቢ አልተወሰነም", en: "Location not set" })}</span>
+                </div>
+                <p className="line-clamp-3 text-sm leading-7 text-soft">{localize(church.statementOfFaith, locale)}</p>
+                <div className="flex flex-wrap gap-2 text-xs text-soft">
+                  {church.weeklyPrograms.slice(0, 2).map((program) => (
+                    <span key={`${church.id}-${program.day.en}`} className="rounded-full border border-black/10 bg-white/40 px-3 py-1">
+                      {localize(program.day, locale)} {program.time}
+                    </span>
+                  ))}
+                </div>
+                  <div className="space-y-2">
+                    {church.events.slice(0, 1).map((event) => (
+                      <div key={`${church.id}-${event.title.en}`} className="rounded-2xl bg-[color:var(--surface)]/60 p-3 text-sm">
+                        <p className="font-medium">{localize(event.title, locale)}</p>
+                        <p className="text-soft">{localize(event.schedule, locale)}</p>
+                      </div>
+                    ))}
+                  </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div className="surface-card rounded-[2rem] p-6 text-soft">
+          {t({ am: "የተያያዘ ቤተክርስቲያን አልተገኘም።", en: "No matching church found." })}
+        </div>
+      )}
     </section>
   );
 }
