@@ -82,38 +82,38 @@ export function ScrollStoryEngine() {
         >
           <div className="flex h-full items-start justify-center md:items-center">
             <article className="manuscript-scroll w-full max-w-3xl rounded-none p-5 md:rounded-[2rem] md:p-10">
-              <p className="text-sm tracking-wide text-soft">📅 {t(scene.historical.year)} • 📍 {t(scene.historical.location)}</p>
-              <h3 className="mt-2 font-serif text-3xl md:text-5xl">🧭 {t(scene.title)}</h3>
+              <p className="text-xs tracking-wide text-soft/70 md:text-sm">📅 {t(scene.historical.year)} • 📍 {t(scene.historical.location)}</p>
+              <h3 className="mt-2 font-serif text-2xl font-medium text-ink/90 md:text-4xl">🧭 {t(scene.title)}</h3>
 
               <div className="mt-3 rounded-lg border-l-4 border-black/25 bg-black/5 px-3 py-2">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-soft md:text-sm">📝 {t({ am: "ዋና ርእስ", en: "Main Topic" })}</p>
+                <p className="text-[10px] font-medium uppercase tracking-[0.24em] text-soft/60 md:text-xs">📝 {t({ am: "ዋና ርእስ", en: "Main Topic" })}</p>
                 <p className="mt-1 pl-4 text-soft indent-6">{t(scene.text)}</p>
               </div>
 
               <div className="mt-7 space-y-5 text-sm md:mt-6 md:space-y-4 md:text-base">
                 <div className="rounded-md border-l-2 border-black/20 pl-3">
-                  <p className="font-semibold text-soft">📖 {t(timelineCopy.labels.scripture)}</p>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-soft/60 md:text-xs">📖 {t(timelineCopy.labels.scripture)}</p>
                   <p className="font-medium">{t(scene.biblical.reference)}</p>
                   <p className="mt-1 pl-4 indent-6">{t(scene.biblical.excerpt)}</p>
                 </div>
 
                 <div className="rounded-md border-l-2 border-black/20 pl-3">
-                  <p className="font-semibold text-soft">🎬 {t({ am: "ምን ተከሰተ?", en: "What happened?" })}</p>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-soft/60 md:text-xs">🎬 {t({ am: "ምን ተከሰተ?", en: "What happened?" })}</p>
                   <WordByWord text={t(scene.wordsActions)} />
                 </div>
 
                 <div className="rounded-md border-l-2 border-black/20 pl-3">
-                  <p className="font-semibold text-soft">🏺 {t({ am: "በዚያን ዘመን", en: "At that time" })}</p>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-soft/60 md:text-xs">🏺 {t({ am: "በዚያን ዘመን", en: "At that time" })}</p>
                   <p className="pl-4 indent-6">{t(scene.historical.context)}</p>
                 </div>
 
                 <div className="rounded-md border-l-2 border-black/20 pl-3">
-                  <p className="font-semibold text-soft">🔎 {t({ am: "ለምን አስፈላጊ ነው?", en: "Why it matters" })}</p>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-soft/60 md:text-xs">🔎 {t({ am: "ለምን አስፈላጊ ነው?", en: "Why it matters" })}</p>
                   <p className="pl-4 indent-6">{t(scene.evidence)}</p>
                 </div>
 
                 <div className="rounded-md border-l-2 border-black/20 pl-3">
-                  <p className="font-semibold text-soft">🕊️ {t(timelineCopy.labels.spiritual)}</p>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-soft/60 md:text-xs">🕊️ {t(timelineCopy.labels.spiritual)}</p>
                   <p className="pl-4 indent-6">{t(scene.spiritualMeaning)}</p>
                 </div>
               </div>

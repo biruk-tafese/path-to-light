@@ -60,7 +60,7 @@ export function JourneyAccordionItem({
         >
           <div className="flex items-center gap-4">
             <EmotionIcon icon={scene.icon} />
-            <h2 className="font-serif text-2xl md:text-3xl">{t(scene.title)}</h2>
+            <h2 className="font-serif text-xl font-medium text-ink/90 md:text-2xl">{t(scene.title)}</h2>
           </div>
           <motion.span
             animate={{ rotate: expanded ? 180 : 0 }}
@@ -82,7 +82,7 @@ export function JourneyAccordionItem({
             >
               <div className="mt-5 space-y-5">
                 <div className="rounded-md border border-black/10 bg-black/5 px-3 py-2">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-soft md:text-sm">
+                  <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-soft/60 md:text-xs">
                     <span className="inline-flex items-center gap-2">
                       <LuTarget size={15} />
                       {t({ am: "Focus", en: "Focus" })}
@@ -92,7 +92,7 @@ export function JourneyAccordionItem({
                 </div>
 
                 <div className="rounded-md border-l-2 border-black/20 pl-3">
-                  <p className="mb-2 font-semibold text-soft">
+                  <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.22em] text-soft/60 md:text-xs">
                     <span className="inline-flex items-center gap-2">
                       <LuCircle size={15} />
                       {t({ am: "Feeling", en: "Feeling" })}
@@ -102,7 +102,7 @@ export function JourneyAccordionItem({
                 </div>
 
                 <div className="rounded-md border-l-2 border-black/20 pl-3">
-                  <p className="mb-2 font-semibold text-soft">
+                  <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.22em] text-soft/60 md:text-xs">
                     <span className="inline-flex items-center gap-2">
                       <LuHeart size={15} />
                       {t({ am: "Christ as Healing and Salvation", en: "Christ as Healing and Salvation" })}
@@ -112,7 +112,7 @@ export function JourneyAccordionItem({
                 </div>
 
                 <div className="rounded-md border-l-2 border-black/20 pl-3">
-                  <p className="mb-1 font-semibold text-soft">
+                  <p className="mb-1 text-[10px] font-medium uppercase tracking-[0.22em] text-soft/60 md:text-xs">
                     <span className="inline-flex items-center gap-2">
                       <LuBookOpen size={15} />
                       {t({ am: "Bible Quote", en: "Bible Quote" })}
@@ -123,7 +123,7 @@ export function JourneyAccordionItem({
                 </div>
 
                 <div className="rounded-md border-l-2 border-black/20 pl-3">
-                  <p className="mb-1 font-semibold text-soft">
+                  <p className="mb-1 text-[10px] font-medium uppercase tracking-[0.22em] text-soft/60 md:text-xs">
                     <span className="inline-flex items-center gap-2">
                       <LuLightbulb size={15} />
                       {t({ am: "Reflection", en: "Reflection" })}

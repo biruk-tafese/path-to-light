@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { LuBookOpen, LuChevronDown, LuFocus, LuHash, LuScrollText } from "react-icons/lu";
+import { LuBookOpen, LuChevronDown, LuFocus, LuHash, LuHeart, LuScrollText, LuShare2 } from "react-icons/lu";
 import { useLanguage } from "@/components/providers/language-provider";
 import type { LocalizedText } from "@/lib/types";
 
@@ -11,6 +11,9 @@ type Props = {
   reference: LocalizedText;
   open: boolean;
   onToggle: () => void;
+  liked: boolean;
+  onLike: () => void;
+  onShare: () => void;
   details?: LocalizedText;
   context?: LocalizedText;
 };
@@ -21,6 +24,9 @@ export function ScriptureCard({
   reference,
   open,
   onToggle,
+  liked,
+  onLike,
+  onShare,
   details,
   context,
 }: Props) {
@@ -31,10 +37,9 @@ export function ScriptureCard({
   return (
     <motion.article
       className="surface-card breathe rounded-[2rem] p-5 md:p-7"
-      initial={{ opacity: 0, y: 26 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.4 }}
-      transition={{ duration: 1.1, ease: "easeInOut" }}
+      initial={{ opacity: 0, y: 18 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.75, ease: "easeOut" }}
       whileHover={{ boxShadow: "0 26px 58px rgba(156, 139, 92, 0.26)" }}
     >
       <button
@@ -103,6 +108,30 @@ export function ScriptureCard({
               <p className="mt-1 pl-4 indent-6 leading-7">{t(context)}</p>
             </div>
           ) : null}
+
+          <div className="flex flex-wrap gap-3 pt-2">
+            <button
+              type="button"
+              onClick={onLike}
+              className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors ${
+                liked
+                  ? "border-[#9d6b44] bg-[#9d6b44]/10 text-[#7d4f2d]"
+                  : "border-black/10 bg-white/40 text-soft hover:bg-white/60"
+              }`}
+            >
+              <LuHeart size={16} className={liked ? "fill-current" : ""} />
+              {liked ? t({ am: "ወደድሁ", en: "Liked" }) : t({ am: "ውድ", en: "Like" })}
+            </button>
+
+            <button
+              type="button"
+              onClick={onShare}
+              className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/40 px-4 py-2 text-sm text-soft transition-colors hover:bg-white/60"
+            >
+              <LuShare2 size={16} />
+              {t({ am: "አጋራ", en: "Share" })}
+            </button>
+          </div>
 
         </motion.div>
       ) : null}
